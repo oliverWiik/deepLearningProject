@@ -17,7 +17,7 @@ print("Running GPU.") if use_cuda else print("No GPU available.")
 
 ##### Setup #####
 
-batch_size = 1
+batch_size = 20
 num_epoch = 1
 
 model = T5ForConditionalGeneration.from_pretrained("ufal/byt5-small-multilexnorm2021-da")
@@ -54,7 +54,7 @@ print("Initiate training")
 progress_bar = tqdm(range(num_training_steps))
 model.train()
 
-eval_every = 100
+eval_every = 1000
 first = True
 steps_training_plot = []
 steps_validation_plot = []
