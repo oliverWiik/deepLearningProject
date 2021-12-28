@@ -9,7 +9,7 @@ with open('results.txt', 'w') as f:
 
 
 import git, os
-repo = git.Repo.clone_from("https://github.com/oliverWiik/deepLearningProject.git", os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'repo'), branch='master')
+repo = git.Repo.clone_from("https://github.com/oliverWiik/deepLearningProject.git", 'repo', branch='master')
 #repo.index.add(["results.txt"])
 #repo.index.commit("This is a test commit message form HPC")
 master = repo.heads.master
