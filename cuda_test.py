@@ -9,13 +9,14 @@ with open('results.txt', 'w') as f:
 
 
 import git, os
-new_repo = git.Repo.init('new_repo')
+new_repo = git.Repo.init('DeeplearningHPCTest')
 git.Repo.clone_from('https://github.com/oliverWiik/deepLearningProject.git', 'DeeplearningHPCTest')
 repo = git.Repo('DeeplearningHPCTest')
+
 print(repo.remotes.origin.pull())
 currentdir = os.getcwd()
 targetfile = os.path.join(currentdir,'results.txt')
-repo.index.add(['results.txt'])
+repo.index.add([targetfile])
 repo.index.commit('initial test commit from HPC node')
 print(repo.remotes.origin.push())
 
