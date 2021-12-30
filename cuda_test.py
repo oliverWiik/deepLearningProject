@@ -9,9 +9,10 @@ with open('results.txt', 'w') as f:
 
 
 import git, os
-new_repo = git.Repo.init('DeeplearningHPCTest')
-git.Repo.clone_from('https://github.com/oliverWiik/deepLearningProject.git', 'DeeplearningHPCTest')
-repo = git.Repo('DeeplearningHPCTest')
+repo = git.Repo('../deepLearningProject')
+#new_repo = git.Repo.init('DeeplearningHPCTest')
+#git.Repo.clone_from('https://github.com/oliverWiik/deepLearningProject.git', 'DeeplearningHPCTest')
+#repo = git.Repo('DeeplearningHPCTest')
 
 print(repo.remotes.origin.pull())
 currentdir = os.getcwd()
