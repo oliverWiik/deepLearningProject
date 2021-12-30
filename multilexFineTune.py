@@ -64,7 +64,7 @@ for name, param in model.named_parameters():
 ##### Training #####
 
 print("Initiate training")
-progress_bar = tqdm(range(num_training_steps))
+progress_bar = tqdm(range(num_training_steps), position=0)
 model.train()
 
 eval_every = round(num_training_steps*0.01)
@@ -101,7 +101,7 @@ for epoch in range(num_epoch):
 
       # Do validation
 		if batch_idx % eval_every == 0 or batch_idx == len(trainloader):
-			progress_bar_eval = tqdm(range(np.ceil(len(dataset.validation)/10)))
+			progress_bar_eval = tqdm(total=len(dataset.validation), position=1)
 			steps_validation_plot.append(current_training_batch)
 			model.eval()
 			validationLoss2Mean = 0
