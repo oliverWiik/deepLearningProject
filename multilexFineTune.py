@@ -25,10 +25,10 @@ batch_size = 10
 num_epoch = 3
 
 model = T5ForConditionalGeneration.from_pretrained("ufal/byt5-small-multilexnorm2021-da")
-optimizer = AdamW(model.parameters(), lr=5e-5)
-print("Optimizer: Adam")
-#optimizer = Adafactor(model.parameters())
-#print("Optimizer: Adafactor")
+#optimizer = AdamW(model.parameters(), lr=5e-5)
+#print("Optimizer: Adam")
+optimizer = Adafactor(model.parameters())
+print("Optimizer: Adafactor")
 criterion = nn.CrossEntropyLoss()
 
 
