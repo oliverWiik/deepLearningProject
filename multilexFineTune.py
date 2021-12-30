@@ -29,6 +29,8 @@ criterion = nn.CrossEntropyLoss()
 
 dataset = MultiPlexDataset(path_to_files=["final_nst.txt", "final_audiobooks.txt"], only_include_corrections=False, short_data=True)
 
+with open('dataset.pickle', 'wb') as f:
+    pickle.dump(dataset, f)
 
 # Use with a datalodaer
 tokenizer = AutoTokenizer.from_pretrained("ufal/byt5-small-multilexnorm2021-da")
