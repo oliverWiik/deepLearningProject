@@ -8,6 +8,7 @@ from torch.utils.data.dataset import T_co
 from transformers import AutoTokenizer, T5ForConditionalGeneration
 from transformers import AdamW
 from datetime import datetime
+import pickle
 #from IPython.display import clear_output
 
 
@@ -104,6 +105,7 @@ for epoch in range(num_epoch):
 			with open("lossData.txt", "a") as file_object:
 				file_object.write(str(datetime.now()) + '\t' + str(current_training_batch) + '\t' + str(np.mean(trainingLossArr)) + '\t' + str(validationLoss2Mean) + '\n')
 			trainingLossArr = []
+
 		
 		progress_bar.update(1)
   
