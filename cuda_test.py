@@ -9,13 +9,21 @@ with open('results.txt', 'w') as f:
 
 
 import git, os
-repo = git.Repo.clone_from("https://github.com/oliverWiik/deepLearningProject.git", 'repo', branch='master')
+new_repo = git.Repo.init('new_repo')
+git.Repo.clone_from('https://github.com/oliverWiik/deepLearningProject.git', 'DeeplearningHPCTest')
+repo = git.Repo('DeeplearningHPCTest')
+print(repo.remotes.origin.pull())
+repo.index.add(['results.txt'])
+repo.index.commit('initial test commit from HPC node')
+print(repo.remotes.origin.push())
+
+#repo = git.Repo.clone_from("https://github.com/oliverWiik/deepLearningProject.git", 'repo', branch='master')
 #repo.index.add(["results.txt"])
 #repo.index.commit("This is a test commit message form HPC")
-master = repo.heads.master
-master.add(["results.txt"])
-master.commit("Tester test")
-master.push()
+#master = repo.heads.master
+#master.add(["results.txt"])
+#master.commit("Tester test")
+#master.push()
 
 #from git import Repo
 #Repo.clone_from("https://github.com/oliverWiik/deepLearningProject.git", "Desktop")
