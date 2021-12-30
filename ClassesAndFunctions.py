@@ -248,7 +248,7 @@ class errorCalculator:
 
 
 
-class testsetAgainstMLPMetrics:
+class testsetAgainstNLPMetrics:
 
     def __init__(self, dataset, tokenizer, model, device):
         i = 0

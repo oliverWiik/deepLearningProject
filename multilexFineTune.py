@@ -111,7 +111,7 @@ for epoch in range(num_epoch):
 	del batch
 
 
-EvaluatedMetricsTest = testsetAgainstMLPMetrics(dataset)
+EvaluatedMetricsTest = testsetAgainstNLPMetrics(dataset)
 print(EvaluatedMetricsTest.errorMeanMetrics)
 
 
