@@ -101,6 +101,7 @@ for epoch in range(num_epoch):
 
       # Do validation
 		if batch_idx % eval_every == 0 or batch_idx == len(trainloader):
+			progress_bar_eval = tqdm(range(np.ceil(len(dataset.validation)/10)))
 			steps_validation_plot.append(current_training_batch)
 			model.eval()
 			validationLoss2Mean = 0
@@ -110,6 +111,8 @@ for epoch in range(num_epoch):
 					output = model(**batch_validation)
 
 				validationLoss2Mean += output.loss.item()
+
+				progress_bar_eval.update(1)
 
 			validationLoss2Mean /= len(validationloader)
 
