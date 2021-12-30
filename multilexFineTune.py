@@ -21,14 +21,14 @@ print("Running GPU.") if use_cuda else print("No GPU available.")
 
 ##### Setup #####
 
-batch_size = 10
+batch_size = 5
 num_epoch = 3
 
 model = T5ForConditionalGeneration.from_pretrained("ufal/byt5-small-multilexnorm2021-da")
-#optimizer = AdamW(model.parameters(), lr=5e-5)
-#print("Optimizer: Adam")
-optimizer = Adafactor(model.parameters())
-print("Optimizer: Adafactor")
+optimizer = AdamW(model.parameters(), lr=5e-5)
+print("Optimizer: Adam")
+#optimizer = Adafactor(model.parameters())
+#print("Optimizer: Adafactor")
 criterion = nn.CrossEntropyLoss()
 
 
@@ -44,7 +44,7 @@ else:
 # Use with a datalodaer
 tokenizer = AutoTokenizer.from_pretrained("ufal/byt5-small-multilexnorm2021-da")
 trainloader = DataLoader(dataset.train, batch_size=batch_size, collate_fn=CollateFunctor(tokenizer))
-validationloader = DataLoader(dataset.validation, batch_size=10, collate_fn=CollateFunctor(tokenizer))
+validationloader = DataLoader(dataset.validation, batch_size=1, collate_fn=CollateFunctor(tokenizer))
 testloader = DataLoader(dataset.test, batch_size=1, collate_fn=CollateFunctor(tokenizer))
 
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
