@@ -24,7 +24,7 @@ except LookupError:
 
 
 
-class MultiPlexDataset(Dataset):
+class MultiLexDataset(Dataset):
 
     def __init__(self,
                  path_to_files: List[str],
@@ -74,7 +74,7 @@ class MultiPlexDataset(Dataset):
         print("Dataset initialized...")
 
         # Split into train (70%), validation (15%) and test (15%) set
-        trainSplitSize = round(len(self.original_sentences)*0.9)
+        trainSplitSize = round(len(self.original_sentences)*0.98)
         tempTrain, tempValidationTest = torch.utils.data.random_split(self.original_sentences, [trainSplitSize, self.original_sentences.__len__()-trainSplitSize])
         tempValidation, tempTest = torch.utils.data.random_split(tempValidationTest, [int(np.floor(len(tempValidationTest)*0.5)), int(np.ceil(len(tempValidationTest)*0.5))])
 
@@ -173,7 +173,7 @@ class errorCalculator:
 
     self.errorMetrics = {}
     self.errorMeanMetrics = {"wer": 0, "bleu": 0, "gleu": 0}
-    progress_bar = tqdm(range(len(sentenceList)))
+    #progress_bar = tqdm(range(len(sentenceList)))
     
     # Loop over wer_score, 
     for i,sentence in enumerate(sentenceList):
@@ -189,7 +189,7 @@ class errorCalculator:
 
       self.errorMetrics[i] = {"wer": werScore, "bleu": bleuScore, "gleu": gleuScore}
 
-      progress_bar.update(1)
+      #progress_bar.update(1)
       
 
 
@@ -253,7 +253,7 @@ class testsetAgainstNLPMetrics:
     def __init__(self, dataset, tokenizer, model, device):
         i = 0
         self.collection = {}
-
+        
         while True: #range(len(dataset.test)):
             if i >= len(dataset.test): break
 
@@ -291,8 +291,8 @@ class testsetAgainstNLPMetrics:
             i = i + sentenceLength
             
         
-        testSetBEforeFinetuning = errorCalculator(self.collection)
-        print(testSetBEforeFinetuning.errorMeanMetrics)
+        self.errorCalc = errorCalculator(self.collection)
+        #print(errorCalc.errorMeanMetrics)
 
 def modelFreezeStatus(model):
 	

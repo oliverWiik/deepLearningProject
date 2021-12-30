@@ -1,7 +1,8 @@
+from genericpath import exists
 import torch
 import numpy as np
 import torch.nn as nn
-
+import os
 from typing import List
 from torch.utils.data import Dataset, DataLoader
 from torch.utils.data.dataset import T_co
@@ -27,9 +28,9 @@ optimizer = AdamW(model.parameters(), lr=5e-5)
 criterion = nn.CrossEntropyLoss()
 
 
-reloadData = True
+reloadData = False
 if reloadData:
-	dataset = MultiPlexDataset(path_to_files=["final_nst.txt", "final_audiobooks.txt"], only_include_corrections=False, short_data=True)
+	dataset = MultiLexDataset(path_to_files=["final_nst.txt", "final_audiobooks.txt"], only_include_corrections=False, short_data=False)
 	with open('dataset.pickle', 'wb') as f:
 		pickle.dump(dataset, f)
 else:
@@ -39,7 +40,7 @@ else:
 # Use with a datalodaer
 tokenizer = AutoTokenizer.from_pretrained("ufal/byt5-small-multilexnorm2021-da")
 trainloader = DataLoader(dataset.train, batch_size=batch_size, collate_fn=CollateFunctor(tokenizer))
-validationloader = DataLoader(dataset.validation, batch_size=1, collate_fn=CollateFunctor(tokenizer))
+validationloader = DataLoader(dataset.validation, batch_size=10, collate_fn=CollateFunctor(tokenizer))
 testloader = DataLoader(dataset.test, batch_size=1, collate_fn=CollateFunctor(tokenizer))
 
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
@@ -62,7 +63,7 @@ print("Initiate training")
 progress_bar = tqdm(range(num_training_steps))
 model.train()
 
-eval_every = 1000
+eval_every = round(num_training_steps*0.01)
 first = True
 steps_training_plot = []
 steps_validation_plot = []
@@ -71,7 +72,7 @@ validationLossArr = []
 current_training_batch = 0
 
 with open("lossData.txt", "a") as file_object:
-				file_object.write('Samples in per epoch:\t' + str(len(trainloader)) + '\t Nb epochs:\t' + str(num_epoch) + '\n')
+				file_object.write('Samples in per epoch:\t' + str(np.ceil(len(dataset.train)/batch_size)) + '\t Nb epochs:\t' + str(num_epoch) + '\n')
 
 for epoch in range(num_epoch):
 	for batch_idx, batch in enumerate(trainloader):
@@ -95,7 +96,7 @@ for epoch in range(num_epoch):
 
 
       # Do validation
-		if batch_idx % eval_every == 0 or batch_idx == num_training_steps:
+		if batch_idx % eval_every == 0 or batch_idx == len(trainloader):
 			steps_validation_plot.append(current_training_batch)
 			model.eval()
 			validationLoss2Mean = 0
@@ -108,8 +109,20 @@ for epoch in range(num_epoch):
 
 			validationLoss2Mean /= len(validationloader)
 
+			modelName = "models/model_" + str(current_training_batch)
+			
+			if not os.path.exists("models"):
+				os.mkdir("models")
+			
+			torch.save(model.state_dict(),modelName)
+
+			EvaluatedMetricsTest = testsetAgainstNLPMetrics(dataset, tokenizer, model, device)
+
 			with open("lossData.txt", "a") as file_object:
-				file_object.write(str(datetime.now()) + '\t' + str(current_training_batch) + '\t' + str(np.mean(trainingLossArr)) + '\t' + str(validationLoss2Mean) + '\n')
+				file_object.write(str(datetime.now()) + '\t' + str(current_training_batch) + '\t' + str(np.mean(trainingLossArr)) + '\t' + 
+				str(validationLoss2Mean) + '\t' + str(EvaluatedMetricsTest.errorCalc.errorMeanMetrics["wer"]) + '\t' + 
+				str(EvaluatedMetricsTest.errorCalc.errorMeanMetrics["bleu"]) + '\t' + str(EvaluatedMetricsTest.errorCalc.errorMeanMetrics["gleu"]) + '\n')
+			
 			trainingLossArr = []
 
 		
@@ -117,16 +130,6 @@ for epoch in range(num_epoch):
   
 	# kill batch
 	del batch
-
-
-EvaluatedMetricsTest = testsetAgainstNLPMetrics(dataset)
-print(EvaluatedMetricsTest.errorMeanMetrics)
-
-
-## Write metrics in a txt file
-
-with open('metrics.txt', 'w') as f:
-    f.write(str(EvaluatedMetricsTest.errorMeanMetrics))
 
 
 
