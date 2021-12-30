@@ -63,6 +63,9 @@ trainingLossArr = []
 validationLossArr = []
 current_training_batch = 0
 
+with open("lossData.txt", "a") as file_object:
+				file_object.write('Samples in per epoch:\t' + str(len(trainloader)))
+
 for epoch in range(num_epoch):
 	for batch_idx, batch in enumerate(trainloader):
 		current_training_batch += 1
