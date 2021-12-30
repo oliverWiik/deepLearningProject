@@ -8,6 +8,7 @@ from torch.utils.data import Dataset, DataLoader
 from torch.utils.data.dataset import T_co
 from transformers import AutoTokenizer, T5ForConditionalGeneration
 from transformers import AdamW
+from transformers import Adafactor
 from datetime import datetime
 import pickle
 #from IPython.display import clear_output
@@ -25,6 +26,7 @@ num_epoch = 1
 
 model = T5ForConditionalGeneration.from_pretrained("ufal/byt5-small-multilexnorm2021-da")
 optimizer = AdamW(model.parameters(), lr=5e-5)
+#optimizer = Adafactor(model.parameters())
 criterion = nn.CrossEntropyLoss()
 
 
