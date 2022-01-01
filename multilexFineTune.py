@@ -22,9 +22,11 @@ print("Running GPU.") if use_cuda else print("No GPU available.")
 ##### Setup #####
 
 batch_size = 5
-num_epoch = 3
+num_epoch = 1
 
 model = T5ForConditionalGeneration.from_pretrained("ufal/byt5-small-multilexnorm2021-da")
+model.load_state_dict(torch.load("models/model_106866"))
+
 optimizer = AdamW(model.parameters(), lr=5e-5)
 print("Optimizer: Adam")
 #optimizer = Adafactor(model.parameters())
@@ -32,7 +34,7 @@ print("Optimizer: Adam")
 criterion = nn.CrossEntropyLoss()
 
 
-reloadData = True
+reloadData = False
 if reloadData:
 	dataset = MultiLexDataset(path_to_files=["final_nst.txt", "final_audiobooks.txt"], only_include_corrections=False, short_data=False)
 	with open('dataset.pickle', 'wb') as f:
@@ -80,6 +82,11 @@ with open("lossData.txt", "a") as file_object:
 
 for epoch in range(num_epoch):
 	for batch_idx, batch in enumerate(trainloader):
+		if batch_idx < 106866: 
+			continue
+		
+		print("batchid out of: ", str(batch_idx))
+		
 		current_training_batch += 1
 		steps_training_plot.append(current_training_batch)
 		model.train()
