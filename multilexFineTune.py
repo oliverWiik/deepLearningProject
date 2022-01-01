@@ -25,7 +25,7 @@ batch_size = 5
 num_epoch = 1
 
 model = T5ForConditionalGeneration.from_pretrained("ufal/byt5-small-multilexnorm2021-da")
-model.load_state_dict(torch.load("model_106866"))
+model.load_state_dict(torch.load("model_106866")) # Only for a specific continuation of a stopped session
 
 optimizer = AdamW(model.parameters(), lr=5e-5)
 print("Optimizer: Adam")
@@ -82,10 +82,9 @@ with open("lossData.txt", "a") as file_object:
 
 for epoch in range(num_epoch):
 	for batch_idx, batch in enumerate(trainloader):
-		if batch_idx < 106866: 
+		if batch_idx < 106866:  # Only for a specific continuation of a stopped session
 			continue
 		
-		print("batchid out of: ", str(batch_idx))
 		
 		current_training_batch += 1
 		steps_training_plot.append(current_training_batch)
