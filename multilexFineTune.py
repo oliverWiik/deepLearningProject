@@ -25,7 +25,7 @@ batch_size = 5
 num_epoch = 1
 
 model = T5ForConditionalGeneration.from_pretrained("ufal/byt5-small-multilexnorm2021-da")
-model.load_state_dict(torch.load("models/model_106866"))
+model.load_state_dict(torch.load("model_106866"))
 
 optimizer = AdamW(model.parameters(), lr=5e-5)
 print("Optimizer: Adam")
