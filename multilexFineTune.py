@@ -127,7 +127,7 @@ for epoch in range(num_epoch):
 			if not os.path.exists("models"):
 				os.mkdir("models")
 			
-			if batch_idx % batch_idx % eval_every*3 == 0:
+			if batch_idx % eval_every*3 == 0:
 				torch.save(model.state_dict(),modelName)
 
 			EvaluatedMetricsTest = testsetAgainstNLPMetrics(dataset, tokenizer, model, device)
