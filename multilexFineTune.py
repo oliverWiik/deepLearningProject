@@ -34,7 +34,7 @@ print("Optimizer: Adam")
 criterion = nn.CrossEntropyLoss()
 
 
-reloadData = False
+reloadData = True
 if reloadData:
 	dataset = MultiLexDataset(path_to_files=["final_nst.txt", "final_audiobooks.txt"], only_include_corrections=False, short_data=False)
 	with open('dataset.pickle', 'wb') as f:
