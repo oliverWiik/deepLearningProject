@@ -21,7 +21,7 @@ print("Running GPU.") if use_cuda else print("No GPU available.")
 
 ##### Setup #####
 
-batch_size = 10
+batch_size = 5
 num_epoch = 1
 
 model = T5ForConditionalGeneration.from_pretrained("ufal/byt5-small-multilexnorm2021-da")
