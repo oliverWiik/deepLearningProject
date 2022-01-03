@@ -27,7 +27,7 @@ num_epoch = 1
 model = T5ForConditionalGeneration.from_pretrained("ufal/byt5-small-multilexnorm2021-da")
 #model.load_state_dict(torch.load("model_106866")) # Only for a specific continuation of a stopped session
 
-optimizer = AdamW(model.parameters(), lr=10e-5)
+optimizer = AdamW(model.parameters(), lr=5e-5)
 print("Optimizer: Adam")
 #optimizer = Adafactor(model.parameters())
 #print("Optimizer: Adafactor")
@@ -127,7 +127,7 @@ for epoch in range(num_epoch):
 			if not os.path.exists("models"):
 				os.mkdir("models")
 			
-			if batch_idx % eval_every*3 == 0:
+			if batch_idx >= 7*10**4 and batch_idx % eval_every*3 == 0:
 				torch.save(model.state_dict(),modelName)
 
 			EvaluatedMetricsTest = testsetAgainstNLPMetrics(dataset, tokenizer, model, device)
