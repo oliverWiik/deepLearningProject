@@ -22,10 +22,12 @@ print("Running GPU.") if use_cuda else print("No GPU available.")
 ##### Setup #####
 
 batch_size = 5
-num_epoch = 3
+num_epoch = 1
 
 model = T5ForConditionalGeneration.from_pretrained("ufal/byt5-small-multilexnorm2021-da")
-optimizer = AdamW(model.parameters(), lr=5e-5)
+#model.load_state_dict(torch.load("model_106866")) # Only for a specific continuation of a stopped session
+
+optimizer = AdamW(model.parameters(), lr=10e-5)
 print("Optimizer: Adam")
 #optimizer = Adafactor(model.parameters())
 #print("Optimizer: Adafactor")
@@ -67,7 +69,7 @@ print("Initiate training")
 progress_bar = tqdm(range(num_training_steps), position=0)
 model.train()
 
-eval_every = round(num_training_steps*0.01)
+eval_every = round(num_training_steps*0.05) # 5%
 first = True
 steps_training_plot = []
 steps_validation_plot = []
@@ -80,6 +82,10 @@ with open("lossData.txt", "a") as file_object:
 
 for epoch in range(num_epoch):
 	for batch_idx, batch in enumerate(trainloader):
+		#if batch_idx < 106866:  # Only for a specific continuation of a stopped session
+		#	continue
+		
+		
 		current_training_batch += 1
 		steps_training_plot.append(current_training_batch)
 		model.train()
@@ -121,7 +127,8 @@ for epoch in range(num_epoch):
 			if not os.path.exists("models"):
 				os.mkdir("models")
 			
-			torch.save(model.state_dict(),modelName)
+			if batch_idx % eval_every*3 == 0:
+				torch.save(model.state_dict(),modelName)
 
 			EvaluatedMetricsTest = testsetAgainstNLPMetrics(dataset, tokenizer, model, device)
 

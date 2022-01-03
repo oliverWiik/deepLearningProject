@@ -74,7 +74,7 @@ class MultiLexDataset(Dataset):
         print("Dataset initialized...")
 
         # Split into train (70%), validation (15%) and test (15%) set
-        trainSplitSize = round(len(self.original_sentences)*0.98)
+        trainSplitSize = round(len(self.original_sentences)*0.995)
         tempTrain, tempValidationTest = torch.utils.data.random_split(self.original_sentences, [trainSplitSize, self.original_sentences.__len__()-trainSplitSize])
         tempValidation, tempTest = torch.utils.data.random_split(tempValidationTest, [int(np.floor(len(tempValidationTest)*0.5)), int(np.ceil(len(tempValidationTest)*0.5))])
 
