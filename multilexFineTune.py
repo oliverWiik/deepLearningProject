@@ -69,7 +69,7 @@ print("Initiate training")
 progress_bar = tqdm(range(num_training_steps), position=0)
 model.train()
 
-eval_every = round(num_training_steps*0.05) # 5%
+eval_every = round(num_training_steps*0.01) # 1%
 first = True
 steps_training_plot = []
 steps_validation_plot = []
