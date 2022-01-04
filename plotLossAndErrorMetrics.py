@@ -2,7 +2,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib
 
-
 def plotLossAndErrorMetrics(filename):
     fileOutDf = pd.read_csv(filename, sep = '\t', header=None)
     matplotlib.rc('font', size=10)
