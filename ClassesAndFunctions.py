@@ -220,6 +220,8 @@ class errorCalculator:
     3
     >>> wer("".split(), "who is there".split())
     3
+
+    - Author: MSc Computer Science Martin Thoma, 2013, https://martin-thoma.com/word-error-rate-calculation/
     """
     # initialisation
     import numpy
