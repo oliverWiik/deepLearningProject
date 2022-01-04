@@ -31,6 +31,6 @@ def plotLossAndErrorMetrics(filename):
 
 
 
-filename = 'D:/OneDrive/Skrivebord/adam3rdTraining.txt'
+filename = 'adam3rdTraining.txt'
 
 plotLossAndErrorMetrics(filename)
